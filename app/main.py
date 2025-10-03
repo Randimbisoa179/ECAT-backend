@@ -20,7 +20,9 @@ app = FastAPI(
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["localhost:3000"],
+    allow_origins=[ "http://localhost:3000",  # Next.js en développement
+        "http://127.0.0.1:3000",
+        "https://votre-domaine.vercel.app", ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
