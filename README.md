@@ -49,10 +49,7 @@ ECAT-backend/
 │   │   ├── admin.py
 │   │   ├── formation.py
 │   │   └── actualite.py
-│   ├── routes/              # Définition des endpoints
-│   │   ├── admin_routes.py
-│   │   ├── formation_routes.py
-│   │   └── actualite_routes.py
+│   │
 │   ├── schemas/             # Schémas Pydantic (validation / sérialisation)
 │   ├── database.py          # Connexion à PostgreSQL
 │   ├── utils/               # Fonctions utilitaires
