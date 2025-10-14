@@ -18,7 +18,7 @@ def init_database():
             default_admin = Admin(
                 nom="Admin ECAT",
                 email="admin@ecat-taratra.mg",
-                password=pwd_context.hash("admin123")
+                password=pwd_context.hash("admin")
             )
             db.add(default_admin)
             db.commit()

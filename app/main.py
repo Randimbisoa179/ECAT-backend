@@ -6,6 +6,7 @@ from fastapi import FastAPI, UploadFile, File, HTTPException, Depends, status, R
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
+
 from datetime import timedelta
 import os
 import uuid
@@ -15,8 +16,9 @@ from typing import List
 
 # Importations des composants locaux
 from app.database import engine, Base, get_db
-from app.models import Admin, Formations, Actualites
-from app.schemas import AdminCreate, AdminResponse, AdminUpdate, FormationCreate, ActualiteCreate
+from app.models import Admin, Formations, Actualites, Director, AboutContent, ContactInfo, ContactMessage
+from app.schemas import AdminCreate, AdminResponse, AdminUpdate, FormationCreate, ActualiteCreate, DirectorCreate, \
+    AboutContentCreate, ContactInfoCreate, ContactMessageCreate
 # Nous importons le routeur ici
 from app.auth import get_password_hash, create_access_token, get_current_admin, ACCESS_TOKEN_EXPIRE_MINUTES, router as auth_router
 
@@ -322,6 +324,206 @@ async def delete_actualite(actualite_id: int, db: Session = Depends(get_db)):
     return {"message": "Actualité supprimée avec succès"}
 
 # --------------------------------------------------------------------------------------
+
+# ==================== DIRECTOR APIs ====================
+
+@app.post("/api/directors")
+async def create_director(director: DirectorCreate, db: Session = Depends(get_db)):
+    db_director = Director(**director.dict())
+    db.add(db_director)
+    db.commit()
+    db.refresh(db_director)
+    return db_director
+
+
+@app.get("/api/directors")
+async def get_directors(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    directors = db.query(Director).offset(skip).limit(limit).all()
+    return directors
+
+
+@app.get("/api/directors/{director_id}")
+async def get_director(director_id: int, db: Session = Depends(get_db)):
+    director = db.query(Director).filter(Director.id == director_id).first()
+    if not director:
+        raise HTTPException(status_code=404, detail="Directeur non trouvé")
+    return director
+
+
+@app.put("/api/directors/{director_id}")
+async def update_director(director_id: int, director: DirectorCreate, db: Session = Depends(get_db)):
+    db_director = db.query(Director).filter(Director.id == director_id).first()
+    if not db_director:
+        raise HTTPException(status_code=404, detail="Directeur non trouvé")
+
+    for key, value in director.dict().items():
+        setattr(db_director, key, value)
+
+    db.commit()
+    db.refresh(db_director)
+    return db_director
+
+
+@app.delete("/api/directors/{director_id}")
+async def delete_director(director_id: int, db: Session = Depends(get_db)):
+    director = db.query(Director).filter(Director.id == director_id).first()
+    if not director:
+        raise HTTPException(status_code=404, detail="Directeur non trouvé")
+
+    db.delete(director)
+    db.commit()
+    return {"message": "Directeur supprimé avec succès"}
+
+
+# ==================== ABOUT CONTENT APIs ====================
+
+@app.post("/api/about-content")
+async def create_about_content(about_content: AboutContentCreate, db: Session = Depends(get_db)):
+    db_about_content = AboutContent(**about_content.dict())
+    db.add(db_about_content)
+    db.commit()
+    db.refresh(db_about_content)
+    return db_about_content
+
+
+@app.get("/api/about-content")
+async def get_about_contents(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    about_contents = db.query(AboutContent).offset(skip).limit(limit).all()
+    return about_contents
+
+
+@app.get("/api/about-content/{content_id}")
+async def get_about_content(content_id: int, db: Session = Depends(get_db)):
+    about_content = db.query(AboutContent).filter(AboutContent.id == content_id).first()
+    if not about_content:
+        raise HTTPException(status_code=404, detail="Contenu About non trouvé")
+    return about_content
+
+
+@app.put("/api/about-content/{content_id}")
+async def update_about_content(content_id: int, about_content: AboutContentCreate, db: Session = Depends(get_db)):
+    db_about_content = db.query(AboutContent).filter(AboutContent.id == content_id).first()
+    if not db_about_content:
+        raise HTTPException(status_code=404, detail="Contenu About non trouvé")
+
+    for key, value in about_content.dict().items():
+        setattr(db_about_content, key, value)
+
+    db.commit()
+    db.refresh(db_about_content)
+    return db_about_content
+
+
+@app.delete("/api/about-content/{content_id}")
+async def delete_about_content(content_id: int, db: Session = Depends(get_db)):
+    about_content = db.query(AboutContent).filter(AboutContent.id == content_id).first()
+    if not about_content:
+        raise HTTPException(status_code=404, detail="Contenu About non trouvé")
+
+    db.delete(about_content)
+    db.commit()
+    return {"message": "Contenu About supprimé avec succès"}
+
+
+# ==================== CONTACT INFO APIs ====================
+
+@app.post("/api/contact-info")
+async def create_contact_info(contact_info: ContactInfoCreate, db: Session = Depends(get_db)):
+    db_contact_info = ContactInfo(**contact_info.dict())
+    db.add(db_contact_info)
+    db.commit()
+    db.refresh(db_contact_info)
+    return db_contact_info
+
+
+@app.get("/api/contact-info")
+async def get_contact_infos(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    contact_infos = db.query(ContactInfo).offset(skip).limit(limit).all()
+    return contact_infos
+
+
+@app.get("/api/contact-info/{info_id}")
+async def get_contact_info(info_id: int, db: Session = Depends(get_db)):
+    contact_info = db.query(ContactInfo).filter(ContactInfo.id == info_id).first()
+    if not contact_info:
+        raise HTTPException(status_code=404, detail="Info contact non trouvée")
+    return contact_info
+
+
+@app.put("/api/contact-info/{info_id}")
+async def update_contact_info(info_id: int, contact_info: ContactInfoCreate, db: Session = Depends(get_db)):
+    db_contact_info = db.query(ContactInfo).filter(ContactInfo.id == info_id).first()
+    if not db_contact_info:
+        raise HTTPException(status_code=404, detail="Info contact non trouvée")
+
+    for key, value in contact_info.dict().items():
+        setattr(db_contact_info, key, value)
+
+    db.commit()
+    db.refresh(db_contact_info)
+    return db_contact_info
+
+
+@app.delete("/api/contact-info/{info_id}")
+async def delete_contact_info(info_id: int, db: Session = Depends(get_db)):
+    contact_info = db.query(ContactInfo).filter(ContactInfo.id == info_id).first()
+    if not contact_info:
+        raise HTTPException(status_code=404, detail="Info contact non trouvée")
+
+    db.delete(contact_info)
+    db.commit()
+    return {"message": "Info contact supprimée avec succès"}
+
+
+# ==================== CONTACT MESSAGE APIs ====================
+
+@app.post("/api/contact-messages")
+async def create_contact_message(contact_message: ContactMessageCreate, db: Session = Depends(get_db)):
+    db_contact_message = ContactMessage(**contact_message.dict())
+    db.add(db_contact_message)
+    db.commit()
+    db.refresh(db_contact_message)
+    return db_contact_message
+
+
+@app.get("/api/contact-messages")
+async def get_contact_messages(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    contact_messages = db.query(ContactMessage).offset(skip).limit(limit).all()
+    return contact_messages
+
+
+@app.get("/api/contact-messages/{message_id}")
+async def get_contact_message(message_id: int, db: Session = Depends(get_db)):
+    contact_message = db.query(ContactMessage).filter(ContactMessage.id == message_id).first()
+    if not contact_message:
+        raise HTTPException(status_code=404, detail="Message non trouvé")
+    return contact_message
+
+
+@app.put("/api/contact-messages/{message_id}")
+async def update_contact_message(message_id: int, contact_message: ContactMessageCreate, db: Session = Depends(get_db)):
+    db_contact_message = db.query(ContactMessage).filter(ContactMessage.id == message_id).first()
+    if not db_contact_message:
+        raise HTTPException(status_code=404, detail="Message non trouvé")
+
+    for key, value in contact_message.dict().items():
+        setattr(db_contact_message, key, value)
+
+    db.commit()
+    db.refresh(db_contact_message)
+    return db_contact_message
+
+
+@app.delete("/api/contact-messages/{message_id}")
+async def delete_contact_message(message_id: int, db: Session = Depends(get_db)):
+    contact_message = db.query(ContactMessage).filter(ContactMessage.id == message_id).first()
+    if not contact_message:
+        raise HTTPException(status_code=404, detail="Message non trouvé")
+
+    db.delete(contact_message)
+    db.commit()
+    return {"message": "Message supprimé avec succès"}
+
 ### Routes de Base
 
 @app.get("/")
@@ -334,4 +536,4 @@ async def health_check():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=5000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
