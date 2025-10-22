@@ -1,4 +1,4 @@
-#!/home/randimbisoa/Bureau/stage/back/.venv1/bin/python3.10
+#!/home/randimbisoa/Bureau/stage/back/.venv1/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
