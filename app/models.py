@@ -10,7 +10,7 @@ class Admin(Base):
     nom = Column(String(100), nullable=False)
     email = Column(String(255), unique=True, index=True, nullable=False)
     password_hash = Column(String(60), nullable=False)  # ✅ Indentation corrigée
-   
+    role = Column(String(50), default='admin', nullable=False)
     
 class Formations(Base):
     __tablename__ = "formations"

@@ -17,6 +17,7 @@ class TokenData(BaseModel):
 class AdminBase(BaseModel):
     nom: str
     email: EmailStr
+    role: Optional[str] = "admin" 
     
 class LoginResponse(BaseModel):
     access_token: str
@@ -24,6 +25,7 @@ class LoginResponse(BaseModel):
     admin_id: int
     nom: str
     email: str
+    role: str 
 
 class AdminCreate(AdminBase):
     password: str
@@ -32,6 +34,7 @@ class AdminUpdate(BaseModel):
     nom: Optional[str] = None
     email: Optional[EmailStr] = None
     password: Optional[str] = None
+    role: Optional[str] = None
 
 class AdminResponse(AdminBase):
     id_admin: int
