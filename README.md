@@ -49,7 +49,7 @@ ECAT-backend/
 │   │   ├── admin.py
 │   │   ├── formation.py
 │   │   └── actualite.py
-│   │
+│   │ ├── routers/ 
 │   ├── schemas/             # Schémas Pydantic (validation / sérialisation)
 │   ├── database.py          # Connexion à PostgreSQL
 │   ├── utils/               # Fonctions utilitaires
