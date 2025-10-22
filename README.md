@@ -110,18 +110,7 @@ La documentation automatique :
 Swagger UI : http://127.0.0.1:8000/docs
 
 Redoc : http://127.0.0.1:8000/redoc
-## 🔗 Endpoints principaux
-| Méthode | Endpoint | Description |
-|----------|-----------|-------------|
-| **POST** | `/api/admin/login` | Connexion de l’administrateur |
-| **GET** | `/api/formations` | Liste des formations |
-| **POST** | `/api/formations` | Ajouter une formation |
-| **PUT** | `/api/formations/{id}` | Modifier une formation |
-| **DELETE** | `/api/formations/{id}` | Supprimer une formation |
-| **GET** | `/api/actualites` | Liste des actualités |
-| **POST** | `/api/actualites` | Ajouter une actualité |
-| **PUT** | `/api/actualites/{id}` | Modifier une actualité |
-| **DELETE** | `/api/actualites/{id}` | Supprimer une actualité |
+
 
 ## 🚀 Déploiement
 Sur Vercel / Render / Railway
